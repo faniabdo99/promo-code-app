@@ -24,7 +24,7 @@ class PromoCodeRedeemRequest extends FormRequest
     protected function validatePromoCode(PromoCode $promoCode): ?string
     {
         // Check if promo code is expired
-        if ($promoCode->expires_at && $promoCode->expires_at < now()) {
+        if ($promoCode->expires_at && $promoCode->expires_at < today()) {
             return 'This promo code has expired.';
         }
 

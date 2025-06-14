@@ -9,6 +9,7 @@ Route::prefix('v1')->group(function () {
     // Auth routes
     Route::post('/signup', [AuthController::class, 'signup']);
     Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
     // Protected routes
     Route::prefix('promo-codes')->middleware('auth:sanctum')->group(function () {

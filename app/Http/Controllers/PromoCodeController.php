@@ -6,6 +6,7 @@ use App\Http\Requests\CreatePromoCodeRequest;
 use App\Http\Requests\PromoCodeRedeemRequest;
 use App\Models\PromoCode;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Cache;
 
 class PromoCodeController extends Controller
 {
@@ -40,14 +41,27 @@ class PromoCodeController extends Controller
      */
     public function redeem(PromoCodeRedeemRequest $request)
     {
-        $user = $request->user();
-        $promoCode = PromoCode::where('code', $request->code)->first();
-        $promoCode->redeem($user);
+        $promoCode = $this->getPromoCode($request->code);
+        $promoCode->redeem(auth()->user());
 
         return response()->json([
             'price' => $request->price,
             'promocode_discounted_amount' => $promoCode->calculateDiscount($request->price),
             'final_price' => $request->price - $promoCode->calculateDiscount($request->price),
         ]);
+    }
+
+    /**
+     * Get a promo code from cache or database.
+     * 
+     * @param string $code The promo code to retrieve
+     * @return \App\Models\PromoCode|null Returns the promo code model if found, null otherwise
+     */
+    private function getPromoCode($code)
+    {
+        $promo_codes = Cache::remember('promo_codes_', 3600, function(){
+            return PromoCode::get();
+        });
+        return $promo_codes->where('code', $code)->first();
     }
 }

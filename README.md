@@ -36,7 +36,7 @@ tests/
 - PHP >= 8.1
 - Composer
 - MySQL/PostgreSQL
-- Laravel 10.x
+- Laravel 12.x
 
 ## Installation
 
@@ -81,6 +81,16 @@ php artisan migrate
 php artisan serve
 ```
 
+Or You can use Laravel Sail to run the docker version
+```bash
+./vendor/bin/sail up
+```
+
+Make sure to run the migrations using the following command
+```bash
+./vendor/bin/sail artisan migrate
+```
+
 ## Testing
 
 Run the test suite:
@@ -95,21 +105,5 @@ php artisan test
 - POST /api/auth/login - Login user
 
 ### Promo Codes
-- GET /api/promo-codes - List all promo codes
 - POST /api/promo-codes - Create a new promo code
-- GET /api/promo-codes/{id} - Get promo code details
-- PUT /api/promo-codes/{id} - Update a promo code
-- DELETE /api/promo-codes/{id} - Delete a promo code
-- POST /api/promo-codes/validate - Validate a promo code
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+- POST /api/promo-codes/redeem - Redeem a promo code
